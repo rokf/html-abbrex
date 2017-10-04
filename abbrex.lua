@@ -34,7 +34,7 @@ setmetatable(abbrex, {
     CLASSID <- ({| ('#' {:id: IDENT :}) / ('.' {:class: IDENT :}) |})*
     TEXT <- '{' {:text: [^}]* :} '}'
     AMMOUNT <- '*' {:ammount: %d+ :}
-    IDENT <- [%a%-]+
+    IDENT <- [%w%-]+
     ]],{
       transform_data = function (data)
         local classes = {}

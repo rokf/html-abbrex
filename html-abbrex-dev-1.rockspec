@@ -6,7 +6,7 @@ source = {
 }
 
 description = {
-    summary = "HTML abbrevation expansion",
+    summary = "HTML abbreviation expansion",
     homepage = "https://github.com/rokf/html-abbrex",
     maintainer = "Rok Fajfar <snewix7@gmail.com>",
     license = "MIT"
