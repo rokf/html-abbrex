@@ -1,6 +1,24 @@
 
 local re = require 're'
 
+local empty = {
+  ['area'] = true,
+  ['base'] = true,
+  ['br'] = true,
+  ['col'] = true,
+  ['embed'] = true,
+  ['hr'] = true,
+  ['img'] = true,
+  ['input'] = true,
+  ['keygen'] = true,
+  ['link'] = true,
+  ['meta'] = true,
+  ['param'] = true,
+  ['source'] = true,
+  ['track'] = true,
+  ['wbr'] = true
+}
+
 local abbrex = {}
 
 setmetatable(abbrex, {
@@ -31,15 +49,25 @@ setmetatable(abbrex, {
         local class_str = (#classes > 0) and string.format(' class="%s"', table.concat(classes,' ')) or ""
         local id_str = (#id > 0) and string.format(' id="%s"', id) or ""
         local nested_text = data.nested or (data.text and string.rep(' ',idt_sum+idt) .. data.text .. '\n' or nil) or ""
-        local str = string.format('%s<%s%s%s>\n%s%s</%s>\n',
-          string.rep(' ',idt_sum),
-          data.el,
-          id_str,
-          class_str,
-          nested_text,
-          string.rep(' ',idt_sum),
-          data.el
-        )
+        local str
+        if empty[data.el] then
+          str = string.format('%s<%s%s%s>\n',
+            string.rep(' ',idt_sum),
+            data.el,
+            id_str,
+            class_str
+          )
+        else
+          str = string.format('%s<%s%s%s>\n%s%s</%s>\n',
+            string.rep(' ',idt_sum),
+            data.el,
+            id_str,
+            class_str,
+            nested_text,
+            string.rep(' ',idt_sum),
+            data.el
+          )
+        end
         idt_sum = idt_sum - idt
         return string.rep(str,data.ammount and tonumber(data.ammount) or 1,'\n')
       end
