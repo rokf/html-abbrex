@@ -7,11 +7,9 @@ setmetatable(abbrex, {
   __call = function (_,abbr,idt)
 
     local idt_sum = 0
-    for i,v in string.gmatch(abbr, '>') do
+    for _,_ in string.gmatch(abbr, '>') do
       idt_sum = idt_sum + idt
     end
-
-    local idt_sum_max = idt_sum -- cache the value
 
     local patt = re.compile([[
     EXPR <- {| {:el: IDENT :} CLASSID AMMOUNT? TEXT? ('>' {:nested: EXPR :})? |} -> transform_data

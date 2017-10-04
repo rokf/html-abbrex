@@ -1,0 +1,12 @@
+#!/usr/bin/env lua
+
+local abbrex = require 'abbrex'
+
+if arg[1] == "-h" then
+  print('Usage: echo "div.wrapper>ul>li*3>p{Item}" | abbrex 3')
+  print('There is only one optional argument, which is the indentation.')
+  print('It defaults to 2 spaces.')
+  print('The example above changes it to 3.')
+else
+  io.write(abbrex(io.read("*all"), arg[1] and tonumber(arg[1]) or 2))
+end
