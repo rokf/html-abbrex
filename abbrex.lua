@@ -1,4 +1,3 @@
-
 local re = require 're'
 
 local empty = {
@@ -30,7 +29,8 @@ setmetatable(abbrex, {
     end
 
     local patt = re.compile([[
-    EXPR <- {| {:el: IDENT :} CLASSID AMMOUNT? TEXT? ('>' {:nested: EXPR :})? |} -> transform_data
+    EXPR <- {| {:el: IDENT :} CLASSID AMMOUNT? TEXT? ('>' {:nested: EXPR :})? |}
+      -> transform_data
     CLASSID <- ({| ('#' {:id: IDENT :}) / ('.' {:class: IDENT :}) |})*
     TEXT <- '{' {:text: [^}]* :} '}'
     AMMOUNT <- '*' {:ammount: %d+ :}
@@ -46,9 +46,13 @@ setmetatable(abbrex, {
             id = v.id
           end
         end
-        local class_str = (#classes > 0) and string.format(' class="%s"', table.concat(classes,' ')) or ""
+        local class_str = (#classes > 0) and
+          string.format(' class="%s"', table.concat(classes,' ')) or ""
         local id_str = (#id > 0) and string.format(' id="%s"', id) or ""
-        local nested_text = data.nested or (data.text and string.rep(' ',idt_sum+idt) .. data.text .. (idt == 0 and "" or "\n") or nil) or ""
+        local nested_text = data.nested or (data.text and
+          string.rep(' ',idt_sum+idt) ..
+          data.text ..
+          (idt == 0 and "" or "\n") or nil) or ""
         local str
         if empty[data.el] then
           str = string.format('%s<%s%s%s>%s',
@@ -72,7 +76,8 @@ setmetatable(abbrex, {
           )
         end
         idt_sum = idt_sum - idt
-        return string.rep(str,data.ammount and tonumber(data.ammount) or 1,idt == 0 and "" or "\n")
+        return string.rep(str,data.ammount and tonumber(data.ammount) or 1,
+          idt == 0 and "" or "\n")
       end
     })
     return patt:match(abbr)
